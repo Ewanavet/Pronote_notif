@@ -1,16 +1,21 @@
 import json
 import pandas as pd
-from pronotepy import Client
+import pronotepy
 from pronotepy.ent import l_normandie
+from config_token import id_ent
 
 
 def connection():
-    return Client(
+    client = pronotepy.Client(
         "https://0760090k.index-education.net/pronote/eleve.html?identifiant=eZGp6R7F4C8rg4G6",
-        username="e.frenel5",
-        password="E.frenel5",
+        username=id_ent[0],
+        password=id_ent[1],
         ent=l_normandie,
     )
+    if not client.logged_in:
+        exit(1)
+    else:
+        return client
 
 
 def actualise_json_grades(

@@ -1,1 +1,0 @@
-path_to_json_grade = "/home/ewanavet/Documents/Pronote_notif/V1/notes.json"
