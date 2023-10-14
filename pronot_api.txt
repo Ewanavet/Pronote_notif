@@ -1,0 +1,64 @@
+Client :
+- info
+- name
+- periods
+    - period
+    - absences
+        - id
+        - from_date
+        - to_date
+        - justified
+        - hoursdays
+        - reasons
+    - averages
+        - student
+        - out_of
+        - default_out_of
+        - class_average
+        - min
+        - max
+        - subject ["ANGLAIS LV1", "ALLEMAND LV2", "FRANCAIS", "HISTOIRE-GEOGRAPHIE", "ENS. MORAL & CIVIQUE", "ED.PHYSIQUE & SPORT.", "ENSEIGN.SCIENTIFIQUE > ENS SC PHYSIQUE", "ENSEIGN.SCIENTIFIQUE > ENS SC SVT", "NUMERIQUE SC.INFORM. > NUMERIQUE SC.INFORM.", "PHYSIQUE-CHIMIE", "CINEMA-AUDIOVISUEL > CINEMA-AUDIOVISUEL", "MATHS SPECIFIQUES"]
+        - id (  'FRANCAIS' : 13994AAA8CC6C4E,
+                'ANGLAIS LV1': 139D3F0AACC6CF6,
+                'ENSEIGN.SCIENTIFIQUE > ENS SC SVT' : 1394DA4ACCC6C22,
+                'ALLEMAND LV2' : 1390D908EBBD39A,
+                'HISTOIRE-GEOGRAPHIE' : 13914DE8CBBD392,
+                'NUMERIQUE SC.INFORM. > NUMERIQUE SC.INFORM.' : 13956AB88BBD3DE,
+                'PHYSIQUE-CHIMIE' : 139709D923D7729,
+                'ENS. MORAL & CIVIQUE' : 13930B3913D77A9,
+                'CINEMA-AUDIOVISUEL > CINEMA-AUDIOVISUEL': 139CA4E953D77EF,
+                'MATHS SPECIFIQUES':1397C24923D77C5
+                'ENSEIGN.SCIENTIFIQUE > ENS SC PHYSIQUE': 1399FAC953D77F8)
+- name
+- groups
+- overall_average
+- start
+- end
+- evaluations
+- grades
+    - grade
+        - id
+        - grade
+        - out_of
+        - default_out_of
+        - date
+        - subject
+        - id
+        - name
+        - groups
+        - period
+- client
+    - id
+    - name
+    - start
+    - end
+    - average
+    - max
+    - min
+    - coefficient
+    - comment
+    - bonus
+    - is_optionnal
+    - is_out_of_20
+    - id 
+    - instances
