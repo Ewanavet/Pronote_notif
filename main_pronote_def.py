@@ -133,9 +133,10 @@ def equivalent_name(name):
         "ED.PHYSIQUE & SPORT.",
         "ENSEIGN.SCIENTIFIQUE > ENS SC PHYSIQUE",
         "ENSEIGN.SCIENTIFIQUE > ENS SC SVT",
-        "NUMERIQUE SC.INFORM. > NUMERIQUE SC.INFORM.",
+        "NUMERIQUE SC.INFORM.",
         "PHYSIQUE-CHIMIE",
-        "CINEMA-AUDIOVISUEL > CINEMA-AUDIOVISUEL",
+        "CINEMA-AUDIOVISUEL",
+        "MATHEMATIQUES",
         "MATHS SPECIFIQUES",
     ]
     short_name = [
@@ -150,6 +151,7 @@ def equivalent_name(name):
         "NSI",
         "PHYSIQUE-CHIMIE",
         "CAV",
+        "MATHS",
         "MATHS OPTION",
     ]
     i = 0
@@ -158,21 +160,22 @@ def equivalent_name(name):
     return short_name[i]
 
 
-def creat_df(grades, old_grades):
+def creat_df(grades):
     # create dataframe with new grade(s)
     added_old_grades = pd.DataFrame(
-        columns=["date", "sujet", "coef", "note", "sur", "comment", "class", "id"]
-    )
-    for j in range(len(grades)):
-        if not grades[j] in old_grades:
-            added_old_grades.loc[len(added_old_grades)] = [
-                grades[j].date,
-                equivalent_name(grades[j].subject.name),
-                grades[j].coefficient,
-                grades[j].grade,
-                grades[j].out_of,
-                grades[j].comment,
-                grades[j].average,
-                grades[j].id,
+        [
+            [
+                grade.date,
+                equivalent_name(grade.subject.name),
+                grade.coefficient,
+                grade.grade.replace(",", "."),
+                grade.out_of.replace(",", "."),
+                grade.comment,
+                grade.average.replace(",", "."),
+                grade.id,
             ]
+            for grade in grades
+        ],
+        columns=["date", "sujet", "coef", "note", "sur", "comment", "class", "id"],
+    )
     return added_old_grades
