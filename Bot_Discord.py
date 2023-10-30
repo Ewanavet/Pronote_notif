@@ -11,27 +11,14 @@ intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
 bot = commands.Bot(command_prefix="!", intents=intents)
-trimestre = 2  # trimestre -1
 rep_grades = "D:/TOUT/Documents/Programation/Projets/Python/pronote/notes.json"
-old_grades = pro.get_gardes()[trimestre]
+old_grades = pro.get_gardes()
 
 
 @bot.command()
 async def test(ctx, arg):
     print("test", arg)
     await ctx.send("!test" + arg)
-
-
-@bot.command()
-async def set_trimestre(ctx, arg):
-    global trimestre
-    trimestre = int(arg) - 1
-    await ctx.send(f"Le trimestre est maintenant {trimestre + 1}")
-
-
-@bot.command()
-async def current_trimestre(ctx):
-    await ctx.send(f"Le trimestre actuel est {trimestre + 1}")
 
 
 @bot.command()
@@ -55,7 +42,7 @@ async def on_ready():
 @tasks.loop(seconds=60 * 1)  # toutes les 10 mins
 async def checkForNewGrades():
     global old_grades
-    grades = pro.get_gardes()[trimestre]
+    grades = pro.get_gardes()
     pro.actualise_json_grades(path_json=rep_grades)
 
     print("Now :", len(grades), ", before :", len(old_grades))
