@@ -1,24 +1,23 @@
 import discord
 from discord.ext import tasks, commands
-import json
+
 import main_pronote_def as pro
-import pandas as pd
 from config_token import TOKEN
 
 
-icon_url = "https://www.zupimages.net/up/23/19/zamy.png"
+icon_url = "https://zupimages.net/up/23/20/rnhz.png"
 intents = discord.Intents.default()
 intents.message_content = True
-client = discord.Client(intents=intents)
 bot = commands.Bot(command_prefix="!", intents=intents)
-rep_grades = "D:/TOUT/Documents/Programation/Projets/Python/pronote/notes.json"
-old_grades = pro.get_gardes()
+client = discord.Client(intents=intents)
+pro_client = pro.connection()
+old_grades = pro.get_gardes_current_period(pro_client)[:-1]
 
 
 @bot.command()
 async def test(ctx, arg):
     print("test", arg)
-    await ctx.send("!test" + arg)
+    await ctx.send("oui : " + arg)
 
 
 @bot.command()
@@ -39,11 +38,10 @@ async def on_ready():
     checkForNewGrades.start()
 
 
-@tasks.loop(seconds=60 * 1)  # toutes les 10 mins
+@tasks.loop(seconds=60 * 10)  # toutes les 10 mins
 async def checkForNewGrades():
     global old_grades
-    grades = pro.get_gardes()
-    pro.actualise_json_grades(path_json=rep_grades)
+    grades = pro.get_gardes_current_period(pro_client)
 
     print("Now :", len(grades), ", before :", len(old_grades))
     if len(grades) > len(old_grades):
@@ -52,8 +50,9 @@ async def checkForNewGrades():
             if len(grades) - len(old_grades) == 1
             else f"{len(grades) - len(old_grades)} notes ajoutées"
         )
-        added_old_grades = pro.creat_df(grades, old_grades)
-        print(added_old_grades)
+        df1 = pro.creat_df(old_grades)
+        df2 = pro.creat_df(grades)
+        added_grades = pro.find_new_grades(df1, df2)
 
         # Notification message
         pre_message = (
@@ -63,8 +62,8 @@ async def checkForNewGrades():
         )
         await bot.get_channel(1096499664146157578).send(pre_message)
 
-        for i in range(len(added_old_grades)):
-            grade_msg = added_old_grades.iloc[i]
+        for i in range(len(added_grades)):
+            grade_msg = added_grades.iloc[i]
             if grade_msg["comment"]:
                 message = f"- note : *{grade_msg['note']}/{grade_msg['sur']}*\n- sujet : {grade_msg['comment']}\n- coef : *{grade_msg['coef']}*\n- classe : *{grade_msg['class']}/{grade_msg['sur']}*"
             else:
@@ -73,7 +72,7 @@ async def checkForNewGrades():
             # create embed
             embed = discord.Embed(
                 title=f"__{grade_msg['sujet']} :__",
-                description=f"Trimestre {trimestre+1}",
+                description=None,
                 color=0x77FE07,
             )
             embed.set_author(name="pronote bot", icon_url=icon_url)
